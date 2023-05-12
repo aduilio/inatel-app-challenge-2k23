@@ -15,24 +15,38 @@
 
 <div class="container mt-2">
     <div class="row d-flex justify-content-center">
-        <div class="col-sm-2">
-            <h4 class="text-center">Download</h4>
-            <p class="h2 text-center">100 MB</p>
+        <div class="col-sm-2 text-center">
+            <label for="startDate">Start date</label>
+            <input id="startDate" class="form-control" type="date" />
         </div>
-        <div class="col-sm-2">
-            <h4 class="text-center">Upload</h4>
-            <p class="h2 text-center">10 MB</p>
+        <div class="col-sm-2 text-center">
+            <label for="endDate">End date</label>
+            <input id="endDate" class="form-control" type="date" />
+        </div>
+        <div class="col-sm-2 d-flex flex-column">
+            <a th:href="@{/consumption}" type="button" class="btn btn-outline-primary mt-auto">Search</a>
         </div>
     </div>
 </div>
 
-<div class="container mt-2">
+<div class="container mt-4">
+    <div class="row d-flex justify-content-center">
+        <div class="col-sm-2">
+            <p class="text-center">Download: <strong>2,4GB</strong></p>
+        </div>
+        <div class="col-sm-2">
+            <p class="text-center">Upload: <strong>500 MB</strong></p>
+        </div>
+    </div>
+</div>
+
+<div class="container">
     <table class="table table-striped text-center">
         <thead>
         <tr>
             <th scope="col">App/IP/Device</th>
-            <th scope="col">Download (KB)</th>
-            <th scope="col">Upload (KB)</th>
+            <th scope="col">Download (MB)</th>
+            <th scope="col">Upload (MB)</th>
         </tr>
         </thead>
         <tbody>
@@ -63,14 +77,6 @@
         </tr>
         </tbody>
     </table>
-</div>
-
-<div class="container mt-5">
-    <div class="row d-flex justify-content-center">
-        <div class="col-3">
-            <a th:href="@{/history}" type="button" class="btn btn-outline-primary">Check consumption history</a>
-        </div>
-    </div>
 </div>
 
 </body>
