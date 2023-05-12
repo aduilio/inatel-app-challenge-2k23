@@ -1,1 +1,8 @@
-
+spring:
+  application:
+    name: NetCap Viasat
+  thymeleaf:
+    cache: false
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
