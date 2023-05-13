@@ -1,11 +1,13 @@
 package com.aduilio.appchallenge.netcap.connector.impl;
 
+
 import com.aduilio.appchallenge.netcap.connector.Connector;
 import com.aduilio.appchallenge.netcap.connector.handler.SocketConnectionHandler;
 import com.aduilio.appchallenge.netcap.connector.observer.SocketConnectionObserver;
 import com.aduilio.appchallenge.netcap.properties.SocketConnectionProperties;
+import com.aduilio.appchallenge.netcap.util.FormatEntityUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -15,10 +17,12 @@ import java.io.IOException;
  */
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class SocketConnector implements Connector, SocketConnectionObserver {
 
-    @Autowired
-    SocketConnectionProperties properties;
+    private final SocketConnectionProperties properties;
+    private final FormatEntityUtil formatEntityUtil;
+
 
     @Override
     public void connect() {
@@ -31,6 +35,6 @@ public class SocketConnector implements Connector, SocketConnectionObserver {
 
     @Override
     public void traffic(String traffic) {
-        System.out.println("\n\nCONTENT 1: " + traffic);
+        formatEntityUtil.parsePayload(traffic);
     }
 }

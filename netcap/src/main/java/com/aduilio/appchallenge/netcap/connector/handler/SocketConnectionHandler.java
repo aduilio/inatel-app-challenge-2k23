@@ -15,7 +15,7 @@ public class SocketConnectionHandler extends Thread {
 
     private final SocketConnectionObserver observer;
 
-    private Socket socket;
+    private final Socket socket;
 
     public SocketConnectionHandler(final String host,
                                    final int port,
@@ -37,18 +37,16 @@ public class SocketConnectionHandler extends Thread {
             StringBuilder data = new StringBuilder();
             while ((bytesRead = inputStream.read(buffer)) != -1) {
                 data.append(new String(buffer, 0, bytesRead));
-                //System.out.println("\n\nDATA 1: " + data);
+
                 if (data.toString().contains(">>")) {
                     String content = data.substring(0, data.indexOf(">>"));
                     observer.traffic(content);
 
-                    //System.out.println("\n\nCONTENT: " + content);
                     if (data.length() <= 2) {
                         data = new StringBuilder();
                     } else {
                         data = new StringBuilder(data.substring(data.indexOf(">>") + 2));
                     }
-                    //System.out.println("\n\nDATA 2: " + data);
                 }
             }
         } catch (IOException e) {
