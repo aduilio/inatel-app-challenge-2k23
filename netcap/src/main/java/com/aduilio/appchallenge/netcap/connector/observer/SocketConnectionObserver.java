@@ -5,5 +5,5 @@ package com.aduilio.appchallenge.netcap.connector.observer;
  */
 public interface SocketConnectionObserver {
 
-    void traffic(String traffic);
+    void traffic(String payload);
 }

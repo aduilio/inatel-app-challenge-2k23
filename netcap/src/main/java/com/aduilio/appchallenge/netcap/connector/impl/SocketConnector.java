@@ -5,7 +5,7 @@ import com.aduilio.appchallenge.netcap.connector.Connector;
 import com.aduilio.appchallenge.netcap.connector.handler.SocketConnectionHandler;
 import com.aduilio.appchallenge.netcap.connector.observer.SocketConnectionObserver;
 import com.aduilio.appchallenge.netcap.properties.SocketConnectionProperties;
-import com.aduilio.appchallenge.netcap.util.FormatEntityUtil;
+import com.aduilio.appchallenge.netcap.service.TrafficService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,8 +21,7 @@ import java.io.IOException;
 public class SocketConnector implements Connector, SocketConnectionObserver {
 
     private final SocketConnectionProperties properties;
-    private final FormatEntityUtil formatEntityUtil;
-
+    private final TrafficService trafficService;
 
     @Override
     public void connect() {
@@ -34,7 +33,7 @@ public class SocketConnector implements Connector, SocketConnectionObserver {
     }
 
     @Override
-    public void traffic(String traffic) {
-        formatEntityUtil.parsePayload(traffic);
+    public void traffic(String payload) {
+        trafficService.saveTraffic(payload);
     }
 }

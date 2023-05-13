@@ -1,3 +1,10 @@
+spring:
+  jpa:
+    defer-datasource-initialization: true
+  h2:
+    console:
+      enabled: true
+
 netcap:
   connection:
     socket:

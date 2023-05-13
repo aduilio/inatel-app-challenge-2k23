@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Utility class to format the payload from the server.
@@ -32,12 +33,13 @@ public class FormatEntityUtil {
      * Parse the payload received from the traffic server.
      *
      * @param payload from the server
-     * @return List of TrafficInfo
+     * @return List of Traffic
      */
-    public List<TrafficInfo> parsePayload(String payload) {
+    public List<Traffic> parsePayload(String payload) {
         try {
-            return objectMapper.readValue(payload, new TypeReference<>() {
+            List<TrafficInfo> trafficInfos = objectMapper.readValue(payload, new TypeReference<>() {
             });
+            return trafficInfos.stream().map(this::mapTrafficFrom).collect(Collectors.toList());
         } catch (JsonProcessingException e) {
             log.error("Failed to parse the payload.", e);
         }
@@ -45,14 +47,14 @@ public class FormatEntityUtil {
         return Collections.emptyList();
     }
 
-    /**
-     * Map the raw traffic info to the {@link Traffic}.
-     *
-     * @param trafficInfo with raw values
-     * @return Traffic
-     */
-    public Traffic mapTrafficFrom(TrafficInfo trafficInfo) {
-        return Traffic.builder().pid(trafficInfo.getPid()).name(trafficInfo.getName()).date(parseDate(trafficInfo.getLastTimeUpdate())).download(parseRate(trafficInfo.getDownload())).upload(parseRate(trafficInfo.getUpload())).build();
+    private Traffic mapTrafficFrom(TrafficInfo trafficInfo) {
+        return Traffic.builder()
+                .pid(trafficInfo.getPid())
+                .name(trafficInfo.getName())
+                .date(parseDate(trafficInfo.getLastTimeUpdate()))
+                .download(parseRate(trafficInfo.getDownload()))
+                .upload(parseRate(trafficInfo.getUpload()))
+                .build();
     }
 
     private LocalDateTime parseDate(String date) {
