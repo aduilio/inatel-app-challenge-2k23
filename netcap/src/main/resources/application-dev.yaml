@@ -1,0 +1,5 @@
+netcap:
+  connection:
+    socket:
+      port: 50000
+      host: localhost
