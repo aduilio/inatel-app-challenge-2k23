@@ -6,3 +6,9 @@ spring:
     enabled: true
     prefix: classpath:/templates/
     suffix: .html
+
+netcap:
+  connection:
+    socket:
+      port: 50000
+      host: localhost
