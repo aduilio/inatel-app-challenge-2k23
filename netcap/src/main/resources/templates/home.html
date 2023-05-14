@@ -21,15 +21,15 @@
     <div class="row">
         <div class="col-sm-4">
             <h4 class="text-center">Consumption today</h4>
-            <p class="h2 text-center">100 MB</p>
+            <p th:text="${consumptionToday}" class="h2 text-center">-</p>
         </div>
         <div class="col-sm-4">
             <h4 class="text-center">Consumption this week</h4>
-            <p class="h2 text-center">500 MB</p>
+            <p th:text="${consumptionWeek}" class="h2 text-center">-</p>
         </div>
         <div class="col-sm-4">
             <h4 class="text-center">Consumption this month</h4>
-            <p class="h2 text-center">1 GB</p>
+            <p th:text="${consumptionMonth}" class="h2 text-center">-</p>
         </div>
     </div>
 </div>

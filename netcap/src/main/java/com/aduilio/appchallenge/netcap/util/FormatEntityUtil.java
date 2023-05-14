@@ -2,7 +2,6 @@ package com.aduilio.appchallenge.netcap.util;
 
 import com.aduilio.appchallenge.netcap.entity.Traffic;
 import com.aduilio.appchallenge.netcap.entity.TrafficInfo;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +22,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class FormatEntityUtil {
 
-    private final static long KB_FACTOR = 1024;
-    private final static long MB_FACTOR = 1024 * KB_FACTOR;
-    private final static long GB_FACTOR = 1024 * MB_FACTOR;
+    private static final long KB_FACTOR = 1024;
+    private static final long MB_FACTOR = 1024 * KB_FACTOR;
+    private static final long GB_FACTOR = 1024 * MB_FACTOR;
 
     private final ObjectMapper objectMapper;
 
@@ -40,21 +39,15 @@ public class FormatEntityUtil {
             List<TrafficInfo> trafficInfos = objectMapper.readValue(payload, new TypeReference<>() {
             });
             return trafficInfos.stream().map(this::mapTrafficFrom).collect(Collectors.toList());
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             log.error("Failed to parse the payload.", e);
         }
 
         return Collections.emptyList();
     }
 
-    private Traffic mapTrafficFrom(TrafficInfo trafficInfo) {
-        return Traffic.builder()
-                .pid(trafficInfo.getPid())
-                .name(trafficInfo.getName())
-                .date(parseDate(trafficInfo.getLastTimeUpdate()))
-                .download(parseRate(trafficInfo.getDownload()))
-                .upload(parseRate(trafficInfo.getUpload()))
-                .build();
+    protected Traffic mapTrafficFrom(TrafficInfo trafficInfo) {
+        return Traffic.builder().pid(trafficInfo.getPid()).name(trafficInfo.getName()).date(parseDate(trafficInfo.getLastTimeUpdate())).download(parseRate(trafficInfo.getDownload())).upload(parseRate(trafficInfo.getUpload())).build();
     }
 
     private LocalDateTime parseDate(String date) {
