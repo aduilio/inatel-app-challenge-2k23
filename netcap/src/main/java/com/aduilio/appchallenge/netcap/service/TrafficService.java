@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
 
@@ -69,6 +70,25 @@ public class TrafficService {
         var endDate = LocalDateTime.now().with(TemporalAdjusters.lastDayOfMonth()).withHour(23).withMinute(59).withSecond(59);
 
         return findConsumption(startDate, endDate);
+    }
+
+    /**
+     * Calculates the consumption of the date range and return a human-readable format.
+     *
+     * @return String
+     */
+    public String consumption(LocalDate startDate, LocalDate endDate) {
+        return findConsumption(startDate.atTime(0,0,0), endDate.atTime(23, 59, 59));
+    }
+
+    /**
+     * Calculates the upload of the date range and return a human-readable format.
+     *
+     * @return String
+     */
+    public String upload(LocalDate startDate, LocalDate endDate) {
+        var consumption = trafficRepository.sumUpload(startDate.atTime(0,0,0), endDate.atTime(23, 59, 59));
+        return formatDataUtil.parseToHumanReadable(consumption);
     }
 
     private String findConsumption(LocalDateTime startDate, LocalDateTime endDate) {

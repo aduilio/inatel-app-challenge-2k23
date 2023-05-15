@@ -21,4 +21,14 @@ public interface TrafficRepository extends JpaRepository<Traffic, Long> {
      */
     @Query("SELECT SUM(t.download) FROM Traffic t WHERE t.date >= :startDate AND t.date <= :endDate")
     Long sumConsumption(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+
+    /**
+     * Returns the sum of upload for a specific date range.
+     *
+     * @param startDate the initial date
+     * @param endDate   the final date
+     * @return Long
+     */
+    @Query("SELECT SUM(t.upload) FROM Traffic t WHERE t.date >= :startDate AND t.date <= :endDate")
+    Long sumUpload(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }

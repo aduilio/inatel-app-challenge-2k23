@@ -39,29 +39,29 @@
     </div>
 </div>
 
-<div class="container mt-4">
+<form class="container mt-4 mb-4" th:action="@{/history/search}" method="post" th:object="${history}">
     <div class="row d-flex justify-content-center">
-        <div class="col-sm-2 text-center">
-            <label for="startDate">Start date</label>
-            <input id="startDate" class="form-control" type="date" />
+        <div class="form-group col-sm-2">
+            <label for="sd">Start date</label>
+            <input id="sd" class="form-control" type="date" th:field="*{startDate}" />
         </div>
-        <div class="col-sm-2 text-center">
-            <label for="endDate">End date</label>
-            <input id="endDate" class="form-control" type="date" />
+        <div class="form-group col-sm-2">
+            <label for="ed">End date</label>
+            <input id="ed" class="form-control" type="date" th:field="*{endDate}"/>
         </div>
         <div class="col-sm-2 d-flex flex-column">
-            <a th:href="@{/consumption}" type="button" class="btn btn-outline-primary mt-auto">Search</a>
+            <button type="submit" class="btn btn-outline-primary mt-auto">Search</button>
         </div>
     </div>
-</div>
+</form>
 
-<div class="container mt-4">
+<div class="container" th:if="${download != null}">
     <div class="row d-flex justify-content-center">
         <div class="col-sm-2">
-            <p class="text-center">Download: <strong>2,4GB</strong></p>
+            <p class="text-center">Download: <strong th:text="${download}"></strong></p>
         </div>
         <div class="col-sm-2">
-            <p class="text-center">Upload: <strong>500 MB</strong></p>
+            <p class="text-center">Upload: <strong th:text="${upload}"></strong></p>
         </div>
     </div>
 </div>
