@@ -66,41 +66,24 @@
     </div>
 </div>
 
-<div class="container">
-    <table class="table table-striped text-center">
+<div class="container mb-5">
+    <table class="table table-striped text-center" th:if="${traffics != null}">
         <thead>
-        <tr>
-            <th scope="col">App/IP/Device</th>
-            <th scope="col">Download (MB)</th>
-            <th scope="col">Upload (MB)</th>
-        </tr>
+            <tr>
+                <th scope="col">Application/Process</th>
+                <th scope="col">Download</th>
+                <th scope="col">Upload</th>
+            </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>Netflix</td>
-            <td>1</td>
-            <td>0.1</td>
-        </tr>
-        <tr>
-            <td>Xbox</td>
-            <td>3</td>
-            <td>2</td>
-        </tr>
-        <tr>
-            <td>192.168.0.15</td>
-            <td>1</td>
-            <td>0.1</td>
-        </tr>
-        <tr>
-            <td>Notebook Dell</td>
-            <td>3</td>
-            <td>2</td>
-        </tr>
-        <tr>
-            <td>iPad</td>
-            <td>1</td>
-            <td>0.1</td>
-        </tr>
+            <tr th:if="${traffics.empty}">
+                <td colspan="3">No traffic available for this period.</td>
+            </tr>
+            <tr th:each="traffic : ${traffics}">
+                <td><span th:text="${traffic.name}">-</span></td>
+                <td><span th:text="${traffic.download}">-</span></td>
+                <td><span th:text="${traffic.upload}">-</span></td>
+            </tr>
         </tbody>
     </table>
 </div>

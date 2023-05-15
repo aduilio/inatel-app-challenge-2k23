@@ -34,6 +34,9 @@ public class HistoryController {
         model.addAttribute("history", History.builder().startDate(startDate).endDate(endDate).build());
         model.addAttribute("download", consumption);
         model.addAttribute("upload", upload);
+
+        model.addAttribute("traffics", trafficService.sumTraffics(startDate, endDate));
+
         return "history";
     }
 }
