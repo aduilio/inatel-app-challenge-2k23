@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Receives the requests to provide the settings values.
@@ -26,9 +27,9 @@ public class SettingsController {
     }
 
     @PostMapping("/settings/save")
-    public String save(@ModelAttribute("settings") Settings settings) {
+    public ModelAndView save(@ModelAttribute("settings") Settings settings) {
         settingsService.saveSettings(settings);
 
-        return "home";
+        return new ModelAndView("redirect:/");
     }
 }

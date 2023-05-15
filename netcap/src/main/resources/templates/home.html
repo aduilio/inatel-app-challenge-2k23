@@ -33,11 +33,11 @@
     </div>
 </header>
 
-<div class="alert alert-danger text-center font-weight-bold">
-    There is a high consumption.
+<div class="alert alert-danger text-center font-weight-bold" th:if="${alert != null}">
+    <span th:text="${alert}"></span>
 </div>
 
-<div class="container mt-2">
+<div class="container mt-2 mb-5">
     <div class="row">
         <div class="col-sm-4">
             <h4 class="text-center">Consumption today</h4>
@@ -50,17 +50,6 @@
         <div class="col-sm-4">
             <h4 class="text-center">Consumption this month</h4>
             <p th:text="${consumptionMonth}" class="h2 text-center">-</p>
-        </div>
-    </div>
-</div>
-
-<div class="container mt-5">
-    <div class="row d-flex justify-content-center">
-        <div class="col-3 text-center">
-            <a th:href="@{/consumption}" type="button" class="btn btn-outline-primary">Check current consumption</a>
-        </div>
-        <div class="col-3 text-center">
-            <a th:href="@{/history}" type="button" class="btn btn-outline-primary">Check consumption history</a>
         </div>
     </div>
 </div>

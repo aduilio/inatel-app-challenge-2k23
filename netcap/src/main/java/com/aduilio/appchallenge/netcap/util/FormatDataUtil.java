@@ -40,10 +40,10 @@ public class FormatDataUtil {
             return formatSize(value, BYTE, "B");
         }
 
-        return "0,00 B";
+        return "0.00 B";
     }
 
     private String formatSize(long size, long divider, String unitName) {
-        return DEC_FORMAT.format((double) size / divider) + " " + unitName;
+        return (DEC_FORMAT.format((double) size / divider) + " " + unitName).replace(",", ".");
     }
 }
