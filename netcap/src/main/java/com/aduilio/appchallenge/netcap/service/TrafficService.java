@@ -25,6 +25,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TrafficService {
 
+    private static final int CURRENT_TRACK_SECONDS = 5;
+
     private final FormatEntityUtil formatEntityUtil;
     private final TrafficRepository trafficRepository;
     private final FormatDataUtil formatDataUtil;
@@ -42,15 +44,21 @@ public class TrafficService {
     }
 
     /**
+     * Calculates the current consumption and return a human-readable format.
+     *
+     * @return String
+     */
+    public String consumptionNow() {
+        return findConsumption(LocalDateTime.now().minusSeconds(CURRENT_TRACK_SECONDS), LocalDateTime.now());
+    }
+
+    /**
      * Calculates the consumption of the day and return a human-readable format.
      *
      * @return String
      */
     public String consumptionToday() {
-        var startDate = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0);
-        var endDate = LocalDateTime.now().withHour(23).withMinute(59).withSecond(59);
-
-        return findConsumption(startDate, endDate);
+        return findConsumption(startDateTime(LocalDate.now()), endDateTime(LocalDate.now()));
     }
 
     /**
@@ -59,10 +67,7 @@ public class TrafficService {
      * @return String
      */
     public String consumptionWeek() {
-        var startDate = LocalDateTime.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)).withHour(0).withMinute(0).withSecond(0);
-        var endDate = LocalDateTime.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY)).withHour(23).withMinute(59).withSecond(59);
-
-        return findConsumption(startDate, endDate);
+        return findConsumption(startWeek(), endWeek());
     }
 
     /**
@@ -71,7 +76,7 @@ public class TrafficService {
      * @return String
      */
     public String consumptionMonth() {
-        return findConsumption(startDateTime(LocalDate.now()), endDateTime(LocalDate.now()));
+        return findConsumption(startMonth(), endMonth());
     }
 
     /**
@@ -84,34 +89,78 @@ public class TrafficService {
     }
 
     /**
+     * Calculates the current upload and return a human-readable format.
+     *
+     * @return String
+     */
+    public String uploadNow() {
+        return findUpload(LocalDateTime.now().minusSeconds(CURRENT_TRACK_SECONDS), LocalDateTime.now());
+    }
+
+    /**
+     * Calculates the upload of the day and return a human-readable format.
+     *
+     * @return String
+     */
+    public String uploadToday() {
+        return findUpload(startDateTime(LocalDate.now()), endDateTime(LocalDate.now()));
+    }
+
+    /**
+     * Calculates the upload of the week and return a human-readable format.
+     *
+     * @return String
+     */
+    public String uploadWeek() {
+        return findUpload(startWeek(), endWeek());
+    }
+
+    /**
+     * Calculates the upload of the month and return a human-readable format.
+     *
+     * @return String
+     */
+    public String uploadMonth() {
+        return findUpload(startMonth(), endMonth());
+    }
+
+    /**
      * Calculates the upload of the date range and return a human-readable format.
      *
      * @return String
      */
     public String upload(LocalDate startDate, LocalDate endDate) {
-        var consumption = trafficRepository.sumUpload(startDateTime(startDate), endDateTime(endDate));
-        return formatDataUtil.parseToHumanReadable(consumption);
+        return findUpload(startDateTime(startDate), endDateTime(endDate));
     }
 
     /**
-     * Sum and format the traffic for each pid. Filter for the process consume more than 1MB.
+     * Sum and format the traffic for each pid.
      *
      * @param startDate the initial date
      * @param endDate   the final date
      * @return List of TrafficInfo
      */
     public List<TrafficInfo> sumTraffics(LocalDate startDate, LocalDate endDate) {
-        var traffics = trafficRepository.sumTraffics(startDateTime(startDate), endDateTime(endDate));
+        return findTraffics(startDateTime(startDate), endDateTime(endDate));
+    }
 
-        return traffics.stream()
-                .filter(traffic -> traffic.getDownload() >= 1000000L)
-                .map(this::mapTrafficInfoFrom)
-                .collect(Collectors.toList());
+    /**
+     * Sum and format the traffic for each pid.
+     *
+     * @return List of TrafficInfo
+     */
+    public List<TrafficInfo> sumCurrentTraffics() {
+        return findTraffics(LocalDateTime.now().minusSeconds(CURRENT_TRACK_SECONDS), LocalDateTime.now());
     }
 
     private String findConsumption(LocalDateTime startDate, LocalDateTime endDate) {
         var consumption = trafficRepository.sumConsumption(startDate, endDate);
         return formatDataUtil.parseToHumanReadable(consumption);
+    }
+
+    private String findUpload(LocalDateTime startDate, LocalDateTime endDate) {
+        var upload = trafficRepository.sumUpload(startDate, endDate);
+        return formatDataUtil.parseToHumanReadable(upload);
     }
 
     private LocalDateTime startDateTime(LocalDate startDate) {
@@ -122,11 +171,29 @@ public class TrafficService {
         return endDate.atTime(23, 59, 59);
     }
 
+    private LocalDateTime startWeek() {
+        return LocalDateTime.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)).withHour(0).withMinute(0).withSecond(0);
+    }
+
+    private LocalDateTime endWeek() {
+        return LocalDateTime.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY)).withHour(23).withMinute(59).withSecond(59);
+    }
+
+    private LocalDateTime startMonth() {
+        return LocalDateTime.now().with(TemporalAdjusters.firstDayOfMonth()).withHour(0).withMinute(0).withSecond(0);
+    }
+
+    private LocalDateTime endMonth() {
+        return LocalDateTime.now().with(TemporalAdjusters.lastDayOfMonth()).withHour(23).withMinute(59).withSecond(59);
+    }
+
+    private List<TrafficInfo> findTraffics(LocalDateTime startDate, LocalDateTime endDate) {
+        var traffics = trafficRepository.sumTraffics(startDate, endDate);
+
+        return traffics.stream().map(this::mapTrafficInfoFrom).collect(Collectors.toList());
+    }
+
     private TrafficInfo mapTrafficInfoFrom(Traffic traffic) {
-        return TrafficInfo.builder()
-                .name(StringUtils.capitalize(traffic.getName().toLowerCase().replace(".exe", "")))
-                .download(formatDataUtil.parseToHumanReadable(traffic.getDownload()))
-                .upload(formatDataUtil.parseToHumanReadable(traffic.getUpload()))
-                .build();
+        return TrafficInfo.builder().name(StringUtils.capitalize(traffic.getName().toLowerCase().replace(".exe", ""))).download(formatDataUtil.parseToHumanReadable(traffic.getDownload())).upload(formatDataUtil.parseToHumanReadable(traffic.getUpload())).build();
     }
 }

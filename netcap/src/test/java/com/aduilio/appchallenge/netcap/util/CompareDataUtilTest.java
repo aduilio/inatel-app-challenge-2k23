@@ -15,26 +15,22 @@ public class CompareDataUtilTest {
     private final CompareDataUtil compareDataUtil = new CompareDataUtil();
 
     @Test
-    void reachValue_withBiggerValue_shouldReturnTrue() {
-        var response = compareDataUtil.reachValue("5 B", "2B");
-        assertTrue(response);
+    void reachConsumptionValue_withBiggerValue_shouldReturnTrue() {
+        assertTrue(compareDataUtil.reachConsumptionValue("5 B", "2B"));
     }
 
     @Test
-    void reachValue_withBiggerMegaValue_shouldReturnTrue() {
-        var response = compareDataUtil.reachValue("5MB", "2 MB");
-        assertTrue(response);
+    void reachConsumptionValue_withBiggerMegaValue_shouldReturnTrue() {
+        assertTrue(compareDataUtil.reachConsumptionValue("5MB", "2 MB"));
     }
 
     @Test
-    void reachValue_withBiggerGigaValue_shouldReturnTrue() {
-        var response = compareDataUtil.reachValue("5GB", "2 GB");
-        assertTrue(response);
+    void reachConsumptionValue_withBiggerGigaValue_shouldReturnTrue() {
+        assertTrue(compareDataUtil.reachConsumptionValue("5GB", "2 GB"));
     }
 
     @Test
-    void reachValue_withLowerValue_shouldReturnTrue() {
-        var response = compareDataUtil.reachValue("2 MB", "2 GB");
-        assertFalse(response);
+    void reachConsumptionValue_withLowerValue_shouldReturnTrue() {
+        assertFalse(compareDataUtil.reachConsumptionValue("2 MB", "2 GB"));
     }
 }
