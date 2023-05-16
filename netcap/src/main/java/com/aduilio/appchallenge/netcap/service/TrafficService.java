@@ -3,6 +3,7 @@ package com.aduilio.appchallenge.netcap.service;
 import com.aduilio.appchallenge.netcap.entity.Traffic;
 import com.aduilio.appchallenge.netcap.entity.TrafficInfo;
 import com.aduilio.appchallenge.netcap.repository.TrafficRepository;
+import com.aduilio.appchallenge.netcap.util.DateUtil;
 import com.aduilio.appchallenge.netcap.util.FormatDataUtil;
 import com.aduilio.appchallenge.netcap.util.FormatEntityUtil;
 import jakarta.transaction.Transactional;
@@ -11,10 +12,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +29,7 @@ public class TrafficService {
     private final FormatEntityUtil formatEntityUtil;
     private final TrafficRepository trafficRepository;
     private final FormatDataUtil formatDataUtil;
+    private final DateUtil dateUtil;
 
     /**
      * Saves the traffics in the database.
@@ -58,7 +58,7 @@ public class TrafficService {
      * @return String
      */
     public String consumptionToday() {
-        return findConsumption(startDateTime(LocalDate.now()), endDateTime(LocalDate.now()));
+        return findConsumption(dateUtil.startDateTime(LocalDate.now()), dateUtil.endDateTime(LocalDate.now()));
     }
 
     /**
@@ -67,7 +67,7 @@ public class TrafficService {
      * @return String
      */
     public String consumptionWeek() {
-        return findConsumption(startWeek(), endWeek());
+        return findConsumption(dateUtil.startWeek(), dateUtil.endWeek());
     }
 
     /**
@@ -76,7 +76,7 @@ public class TrafficService {
      * @return String
      */
     public String consumptionMonth() {
-        return findConsumption(startMonth(), endMonth());
+        return findConsumption(dateUtil.startMonth(), dateUtil.endMonth());
     }
 
     /**
@@ -85,7 +85,7 @@ public class TrafficService {
      * @return String
      */
     public String consumption(LocalDate startDate, LocalDate endDate) {
-        return findConsumption(startDateTime(startDate), endDateTime(endDate));
+        return findConsumption(dateUtil.startDateTime(startDate), dateUtil.endDateTime(endDate));
     }
 
     /**
@@ -103,7 +103,7 @@ public class TrafficService {
      * @return String
      */
     public String uploadToday() {
-        return findUpload(startDateTime(LocalDate.now()), endDateTime(LocalDate.now()));
+        return findUpload(dateUtil.startDateTime(LocalDate.now()), dateUtil.endDateTime(LocalDate.now()));
     }
 
     /**
@@ -112,7 +112,7 @@ public class TrafficService {
      * @return String
      */
     public String uploadWeek() {
-        return findUpload(startWeek(), endWeek());
+        return findUpload(dateUtil.startWeek(), dateUtil.endWeek());
     }
 
     /**
@@ -121,7 +121,7 @@ public class TrafficService {
      * @return String
      */
     public String uploadMonth() {
-        return findUpload(startMonth(), endMonth());
+        return findUpload(dateUtil.startMonth(), dateUtil.endMonth());
     }
 
     /**
@@ -130,7 +130,7 @@ public class TrafficService {
      * @return String
      */
     public String upload(LocalDate startDate, LocalDate endDate) {
-        return findUpload(startDateTime(startDate), endDateTime(endDate));
+        return findUpload(dateUtil.startDateTime(startDate), dateUtil.endDateTime(endDate));
     }
 
     /**
@@ -141,7 +141,7 @@ public class TrafficService {
      * @return List of TrafficInfo
      */
     public List<TrafficInfo> sumTraffics(LocalDate startDate, LocalDate endDate) {
-        return findTraffics(startDateTime(startDate), endDateTime(endDate));
+        return findTraffics(dateUtil.startDateTime(startDate), dateUtil.endDateTime(endDate));
     }
 
     /**
@@ -163,30 +163,6 @@ public class TrafficService {
         return formatDataUtil.parseToHumanReadable(upload);
     }
 
-    private LocalDateTime startDateTime(LocalDate startDate) {
-        return startDate.atTime(0, 0, 0);
-    }
-
-    private LocalDateTime endDateTime(LocalDate endDate) {
-        return endDate.atTime(23, 59, 59);
-    }
-
-    private LocalDateTime startWeek() {
-        return LocalDateTime.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)).withHour(0).withMinute(0).withSecond(0);
-    }
-
-    private LocalDateTime endWeek() {
-        return LocalDateTime.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY)).withHour(23).withMinute(59).withSecond(59);
-    }
-
-    private LocalDateTime startMonth() {
-        return LocalDateTime.now().with(TemporalAdjusters.firstDayOfMonth()).withHour(0).withMinute(0).withSecond(0);
-    }
-
-    private LocalDateTime endMonth() {
-        return LocalDateTime.now().with(TemporalAdjusters.lastDayOfMonth()).withHour(23).withMinute(59).withSecond(59);
-    }
-
     private List<TrafficInfo> findTraffics(LocalDateTime startDate, LocalDateTime endDate) {
         var traffics = trafficRepository.sumTraffics(startDate, endDate);
 
@@ -194,6 +170,10 @@ public class TrafficService {
     }
 
     private TrafficInfo mapTrafficInfoFrom(Traffic traffic) {
-        return TrafficInfo.builder().name(StringUtils.capitalize(traffic.getName().toLowerCase().replace(".exe", ""))).download(formatDataUtil.parseToHumanReadable(traffic.getDownload())).upload(formatDataUtil.parseToHumanReadable(traffic.getUpload())).build();
+        return TrafficInfo.builder()
+                .name(StringUtils.capitalize(traffic.getName().toLowerCase().replace(".exe", "")))
+                .download(formatDataUtil.parseToHumanReadable(traffic.getDownload()))
+                .upload(formatDataUtil.parseToHumanReadable(traffic.getUpload()))
+                .build();
     }
 }
