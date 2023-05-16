@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.thymeleaf.util.StringUtils;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
  * Receives the requests to provide the home page.
  */
 @Controller
+@RequestMapping("/")
 @RequiredArgsConstructor
 public class HomeController {
 
@@ -26,7 +28,7 @@ public class HomeController {
     private final CompareDataUtil compareDataUtil;
 
 
-    @GetMapping("/")
+    @GetMapping
     public String home(Model model) {
         model.addAttribute("consumptionNow", trafficService.consumptionNow());
         model.addAttribute("consumptionToday", trafficService.consumptionToday());

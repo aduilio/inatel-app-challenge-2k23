@@ -7,7 +7,7 @@ import lombok.Getter;
 import java.util.List;
 
 /**
- * Represents the traffic information from the network traffic meter.
+ * Represents the traffic information from the network traffic analyzer.
  */
 @Builder
 @Getter

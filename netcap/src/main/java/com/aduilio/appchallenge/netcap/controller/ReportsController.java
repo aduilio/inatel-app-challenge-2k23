@@ -9,10 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ResourceUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
@@ -24,6 +21,7 @@ import java.util.Date;
  * Receives the requests to provide the reports values.
  */
 @Controller
+@RequestMapping("reports")
 @RequiredArgsConstructor
 public class ReportsController {
 
@@ -31,21 +29,21 @@ public class ReportsController {
 
     private final ReportsService reportsService;
 
-    @GetMapping("/reports")
+    @GetMapping
     public String reports(Model model) {
         getChartData(model, getStartDefaultDate(), new Date());
 
         return "reports";
     }
 
-    @PostMapping("/reports/search")
+    @PostMapping("/search")
     public String search(Model model, @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM") Date startDate, @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM") Date endDate) {
         getChartData(model, startDate, endDate);
 
         return "reports";
     }
 
-    @GetMapping(value = "/reports/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ResponseBody
     public FileSystemResource download() throws FileNotFoundException {
         return new FileSystemResource(ResourceUtils.getFile("classpath:Report_Consumption.pdf"));
