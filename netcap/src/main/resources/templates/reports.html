@@ -90,6 +90,10 @@
                     </div>
                 </div>
             </form>
+
+            <div th:if="${chartData != null and not #lists.isEmpty(chartData)}">
+                <a class="btn btn-block btn-secondary mt-4" th:href="@{|/reports/download|}" th:target="_blank"><i class="bi bi-download"></i> Download PDF</a>
+            </div>
         </div>
         <div class="col-sm-9 vh-100 d-inline-block">
             <div class="text-center" th:if="${#lists.isEmpty(chartData)}">

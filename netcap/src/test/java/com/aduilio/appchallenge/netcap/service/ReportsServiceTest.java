@@ -68,11 +68,11 @@ public class ReportsServiceTest {
         var chartItems = result.get(0);
         assertEquals(chartItems.size(), 7);
         assertEquals(chartItems.get(0), "Month");
-        assertEquals(chartItems.get(1), APP);
-        assertEquals(chartItems.get(2), APP11);
-        assertEquals(chartItems.get(3), APP12);
-        assertEquals(chartItems.get(4), APP21);
-        assertEquals(chartItems.get(5), APP22);
+        assertEquals(chartItems.get(1), APP.toUpperCase());
+        assertEquals(chartItems.get(2), APP11.toUpperCase());
+        assertEquals(chartItems.get(3), APP12.toUpperCase());
+        assertEquals(chartItems.get(4), APP21.toUpperCase());
+        assertEquals(chartItems.get(5), APP22.toUpperCase());
         assertEquals(chartItems.get(6), "Others");
 
         var firstMonthValues = result.get(1);

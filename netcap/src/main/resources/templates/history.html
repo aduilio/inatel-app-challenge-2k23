@@ -59,6 +59,10 @@
                     </div>
                 </div>
             </form>
+
+            <div th:if="${traffics != null and not #lists.isEmpty(traffics)}">
+                <a class="btn btn-block btn-secondary mt-4" th:href="@{|/history/download|}" th:target="_blank"><i class="bi bi-download"></i> Download PDF</a>
+            </div>
         </div>
         <div class="col-sm-9">
             <div class="container" th:if="${download != null}">
