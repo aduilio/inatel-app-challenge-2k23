@@ -17,19 +17,19 @@ public class FormatDataUtilTest {
     @Test
     void parseToHumanReadable_withGigaValue_shouldReturnGB() {
         var response = formatDataUtil.parseToHumanReadable(3000000000L);
-        assertEquals(response, "2,79 GB");
+        assertEquals(response, "2.79 GB");
     }
 
     @Test
     void parseToHumanReadable_withMegaValue_shouldReturnMB() {
         var response = formatDataUtil.parseToHumanReadable(3000000L);
-        assertEquals(response, "2,86 MB");
+        assertEquals(response, "2.86 MB");
     }
 
     @Test
     void parseToHumanReadable_withKiloValue_shouldReturnKB() {
         var response = formatDataUtil.parseToHumanReadable(3000L);
-        assertEquals(response, "2,93 KB");
+        assertEquals(response, "2.93 KB");
     }
 
     @Test

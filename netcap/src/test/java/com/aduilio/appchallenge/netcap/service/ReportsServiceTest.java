@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.thymeleaf.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.format.TextStyle;
@@ -32,12 +33,12 @@ public class ReportsServiceTest {
     private static final String APP21 = "app21";
     private static final String APP22 = "app22";
 
-    private static final Long APP_CONSUMPTION = 10000000L;
-    private static final Long APP11_CONSUMPTION = 11000000L;
-    private static final Long APP12_CONSUMPTION = 12000000L;
+    private static final Long APP_CONSUMPTION = 1000000000L;
+    private static final Long APP11_CONSUMPTION = 1100000000L;
+    private static final Long APP12_CONSUMPTION = 1200000000L;
     private static final Long APP13_CONSUMPTION = 1000L;
-    private static final Long APP21_CONSUMPTION = 21000000L;
-    private static final Long APP22_CONSUMPTION = 22000000L;
+    private static final Long APP21_CONSUMPTION = 2100000000L;
+    private static final Long APP22_CONSUMPTION = 2200000000L;
 
     @Mock
     private TrafficRepository trafficRepositoryMock;
@@ -68,32 +69,32 @@ public class ReportsServiceTest {
         var chartItems = result.get(0);
         assertEquals(chartItems.size(), 7);
         assertEquals(chartItems.get(0), "Month");
-        assertEquals(chartItems.get(1), APP.toUpperCase());
-        assertEquals(chartItems.get(2), APP11.toUpperCase());
-        assertEquals(chartItems.get(3), APP12.toUpperCase());
-        assertEquals(chartItems.get(4), APP21.toUpperCase());
-        assertEquals(chartItems.get(5), APP22.toUpperCase());
+        assertEquals(chartItems.get(1), StringUtils.capitalize(APP));
+        assertEquals(chartItems.get(2), StringUtils.capitalize(APP11));
+        assertEquals(chartItems.get(3), StringUtils.capitalize(APP12));
+        assertEquals(chartItems.get(4), StringUtils.capitalize(APP21));
+        assertEquals(chartItems.get(5), StringUtils.capitalize(APP22));
         assertEquals(chartItems.get(6), "Others");
 
         var firstMonthValues = result.get(1);
         assertEquals(firstMonthValues.size(), 7);
         assertEquals(firstMonthValues.get(0), startDate.getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault()).toUpperCase().toUpperCase().replaceAll("[^A-Z]", "") + "/" + startDate.getYear());
-        assertEquals(firstMonthValues.get(1), APP_CONSUMPTION);
-        assertEquals(firstMonthValues.get(2), APP11_CONSUMPTION);
-        assertEquals(firstMonthValues.get(3), APP12_CONSUMPTION);
-        assertEquals(firstMonthValues.get(4), 0L); //APP21
-        assertEquals(firstMonthValues.get(5), 0L); //APP22
-        assertEquals(firstMonthValues.get(6), APP13_CONSUMPTION); //Less than 1M
+        assertEquals(firstMonthValues.get(1), APP_CONSUMPTION / 1000000000.0);
+        assertEquals(firstMonthValues.get(2), APP11_CONSUMPTION / 1000000000.0);
+        assertEquals(firstMonthValues.get(3), APP12_CONSUMPTION / 1000000000.0);
+        assertEquals(firstMonthValues.get(4), 0.0); //APP21
+        assertEquals(firstMonthValues.get(5), 0.0); //APP22
+        assertEquals(firstMonthValues.get(6), APP13_CONSUMPTION / 1000000000.0); //Less than 1M
 
         var lastMonthValues = result.get(2);
         assertEquals(lastMonthValues.size(), 7);
         assertEquals(lastMonthValues.get(0), endDate.getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault()).toUpperCase().toUpperCase().replaceAll("[^A-Z]", "") + "/" + endDate.getYear());
-        assertEquals(lastMonthValues.get(1), APP_CONSUMPTION);
-        assertEquals(lastMonthValues.get(2), 0L); //APP11
-        assertEquals(lastMonthValues.get(3), 0L); //APP12
-        assertEquals(lastMonthValues.get(4), APP21_CONSUMPTION * 2);
-        assertEquals(lastMonthValues.get(5), APP22_CONSUMPTION); //APP22
-        assertEquals(lastMonthValues.get(6), 0L);
+        assertEquals(lastMonthValues.get(1), APP_CONSUMPTION / 1000000000.0);
+        assertEquals(lastMonthValues.get(2), 0.0); //APP11
+        assertEquals(lastMonthValues.get(3), 0.0); //APP12
+        assertEquals(lastMonthValues.get(4), APP21_CONSUMPTION * 2 / 1000000000.0);
+        assertEquals(lastMonthValues.get(5), APP22_CONSUMPTION / 1000000000.0); //APP22
+        assertEquals(lastMonthValues.get(6), 0.0);
     }
 
     private List<Traffic> createTraffics1() {
