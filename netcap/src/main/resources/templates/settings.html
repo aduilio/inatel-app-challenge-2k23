@@ -46,42 +46,47 @@
             <div class="row">
                 <div class="col-sm-6 mb-2">
                     <div class="card border-secondary">
-                        <div class="card-body text-secondary">
+                        <div class="card-body">
                             <div class="form-group">
                                 <label for="alertThresholdConsumption">Monthly threshold consumption to receive an alert:</label>
-                                <input type="text" th:field="*{thresholdConsumption}" id="alertThresholdConsumption" class="form-control mt-1" placeholder="Enter consumption threshold">
+                                <input type="text" th:field="*{thresholdConsumption}" id="alertThresholdConsumption" class="form-control text-secondary mt-1" placeholder="Enter consumption threshold">
                             </div>
                             <div class="form-group mt-2">
                                 <label for="alertThresholdEmail">Email address to receive the threshold consumption alert:</label>
-                                <input type="email" th:field="*{emailConsumption}" class="form-control mt-1" id="alertThresholdEmail" placeholder="Enter email">
+                                <input type="email" th:field="*{emailConsumption}" class="form-control text-secondary mt-1" id="alertThresholdEmail" placeholder="Enter email">
                             </div>
                             <div class="form-group mt-2">
                                 <label for="alertThresholdPhone">Phone number to receive the threshold consumption alert:</label>
-                                <input type="text" th:field="*{phoneConsumption}" class="form-control mt-1" id="alertThresholdPhone" placeholder="Enter phone number">
+                                <input type="text" th:field="*{phoneConsumption}" class="form-control text-secondary mt-1" id="alertThresholdPhone" placeholder="Enter phone number">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6 mb-2">
                     <div class="card border-secondary">
-                        <div class="card-body text-secondary">
+                        <div class="card-body">
                             <div class="form-group">
                                 <label for="alertThresholdUsage">Application threshold usage to receive an alert:</label>
-                                <input type="text" th:field="*{thresholdUsage}" class="form-control mt-1" id="alertThresholdUsage" placeholder="Enter usage threshold">
+                                <input type="text" th:field="*{thresholdUsage}" class="form-control text-secondary mt-1" id="alertThresholdUsage" placeholder="Enter usage threshold">
                             </div>
                             <div class="form-group mt-2">
                                 <label for="alertUsageEmail">Email address to receive the threshold usage alert:</label>
-                                <input type="email" th:field="*{emailUsage}" class="form-control mt-1" id="alertUsageEmail" placeholder="Enter email">
+                                <input type="email" th:field="*{emailUsage}" class="form-control text-secondary mt-1" id="alertUsageEmail" placeholder="Enter email">
                             </div>
                             <div class="form-group mt-2">
                                 <label for="alertUsagePhone">Phone number to receive the threshold usage alert:</label>
-                                <input type="text" th:field="*{phoneUsage}" class="form-control mt-1" id="alertUsagePhone" placeholder="Enter phone number">
+                                <input type="text" th:field="*{phoneUsage}" class="form-control text-secondary mt-1" id="alertUsagePhone" placeholder="Enter phone number">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Save</button>
+
+            <div class="d-grid gap-2 d-md-flex">
+                <div class="d-grid gap-2 col-sm-2 mt-2">
+                    <button type="submit" class="btn btn-outline-primary"> Save </button>
+                </div>
+            </div>
         </form>
     </div>
 </div>
