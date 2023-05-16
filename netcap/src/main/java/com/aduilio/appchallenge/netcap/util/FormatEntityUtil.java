@@ -22,10 +22,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class FormatEntityUtil {
 
-    private static final long KB_FACTOR = 1024;
-    private static final long MB_FACTOR = 1024 * KB_FACTOR;
-    private static final long GB_FACTOR = 1024 * MB_FACTOR;
-
     private final ObjectMapper objectMapper;
 
     /**
@@ -38,7 +34,9 @@ public class FormatEntityUtil {
         try {
             List<TrafficInfo> trafficInfos = objectMapper.readValue(payload, new TypeReference<>() {
             });
-            return trafficInfos.stream().map(this::mapTrafficFrom).collect(Collectors.toList());
+            return trafficInfos.stream()
+                    .map(this::mapTrafficFrom)
+                    .collect(Collectors.toList());
         } catch (Exception e) {
             log.error("Failed to parse the payload.", e);
         }
@@ -47,27 +45,17 @@ public class FormatEntityUtil {
     }
 
     protected Traffic mapTrafficFrom(TrafficInfo trafficInfo) {
-        return Traffic.builder().pid(trafficInfo.getPid()).name(trafficInfo.getName()).date(parseDate(trafficInfo.getLastTimeUpdate())).download(parseRate(trafficInfo.getDownload())).upload(parseRate(trafficInfo.getUpload())).build();
+        return Traffic.builder()
+                .pid(trafficInfo.getPid())
+                .name(trafficInfo.getName())
+                .date(parseDate(trafficInfo.getLastTimeUpdate()))
+                .download(Long.valueOf(trafficInfo.getDownload()))
+                .upload(Long.valueOf(trafficInfo.getUpload()))
+                .build();
     }
 
     private LocalDateTime parseDate(String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy, HH:mm:ss");
         return LocalDateTime.parse(date, formatter);
-    }
-
-    private Long parseRate(String rate) {
-        if (rate.contains("GB")) {
-            rate = rate.replace("GB", "");
-            return (long) (Double.parseDouble(rate) * GB_FACTOR);
-        } else if (rate.contains("MB")) {
-            rate = rate.replace("MB", "");
-            return (long) (Double.parseDouble(rate) * MB_FACTOR);
-        } else if (rate.contains("KB")) {
-            rate = rate.replace("KB", "");
-            return (long) (Double.parseDouble(rate) * KB_FACTOR);
-        } else {
-            rate = rate.replace("B", "");
-            return (long) Double.parseDouble(rate);
-        }
     }
 }
