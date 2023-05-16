@@ -69,7 +69,7 @@ public class DateUtilTest {
     }
 
     @Test
-    void startMonth_withValue_shouldSetFirstDay() {
+    void startMonth_withCurrentValue_shouldSetFirstDay() {
         var localDate = LocalDate.now();
         var result = dateUtil.startMonth();
 
@@ -81,9 +81,33 @@ public class DateUtilTest {
     }
 
     @Test
-    void endMonth_withValue_shouldSetLastDay() {
+    void endMonth_withCurrentValue_shouldSetLastDay() {
         var localDate = LocalDate.now();
         var result = dateUtil.endMonth();
+
+        assertEquals(result.getDayOfMonth(), localDate.getMonth().maxLength());
+        assertEquals(result.getMonth(), localDate.getMonth());
+        assertEquals(result.getHour(), 23);
+        assertEquals(result.getMinute(), 59);
+        assertEquals(result.getSecond(), 59);
+    }
+
+    @Test
+    void startMonth_withValue_shouldSetFirstDay() {
+        var localDate = LocalDate.now().minusMonths(2);
+        var result = dateUtil.startMonth(localDate);
+
+        assertEquals(result.getDayOfMonth(), 1);
+        assertEquals(result.getMonth(), localDate.getMonth());
+        assertEquals(result.getHour(), 0);
+        assertEquals(result.getMinute(), 0);
+        assertEquals(result.getSecond(), 0);
+    }
+
+    @Test
+    void endMonth_withValue_shouldSetLastDay() {
+        var localDate = LocalDate.now().minusMonths(2);
+        var result = dateUtil.endMonth(localDate);
 
         assertEquals(result.getDayOfMonth(), localDate.getMonth().maxLength());
         assertEquals(result.getMonth(), localDate.getMonth());

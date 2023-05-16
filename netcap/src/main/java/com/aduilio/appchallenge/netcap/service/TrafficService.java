@@ -170,10 +170,6 @@ public class TrafficService {
     }
 
     private TrafficInfo mapTrafficInfoFrom(Traffic traffic) {
-        return TrafficInfo.builder()
-                .name(StringUtils.capitalize(traffic.getName().toLowerCase().replace(".exe", "")))
-                .download(formatDataUtil.parseToHumanReadable(traffic.getDownload()))
-                .upload(formatDataUtil.parseToHumanReadable(traffic.getUpload()))
-                .build();
+        return TrafficInfo.builder().name(StringUtils.capitalize(traffic.getName().toLowerCase().replace(".exe", ""))).download(formatDataUtil.parseToHumanReadable(traffic.getDownload())).upload(formatDataUtil.parseToHumanReadable(traffic.getUpload())).build();
     }
 }

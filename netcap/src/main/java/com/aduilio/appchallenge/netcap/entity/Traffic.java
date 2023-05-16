@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.thymeleaf.util.StringUtils;
 
 import java.time.LocalDateTime;
 
@@ -42,4 +43,13 @@ public class Traffic {
     private LocalDateTime date;
     private Long upload;
     private Long download;
+
+    /**
+     * Capitalize the name.
+     */
+    public void adjustName() {
+        if (!StringUtils.isEmptyOrWhitespace(name)) {
+            name = StringUtils.capitalize(name.toLowerCase().replace(".exe", ""));
+        }
+    }
 }
