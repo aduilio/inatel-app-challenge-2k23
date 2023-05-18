@@ -1,6 +1,6 @@
 package com.aduilio.appchallenge.netcap.controller;
 
-import com.aduilio.appchallenge.netcap.entity.Report;
+import com.aduilio.appchallenge.netcap.entity.ReportDateRange;
 import com.aduilio.appchallenge.netcap.service.ReportsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
@@ -31,16 +31,12 @@ public class ReportsController {
 
     @GetMapping
     public String reports(Model model) {
-        getChartData(model, getStartDefaultDate(), new Date());
-
-        return "reports";
+        return getChartData(model, getStartDefaultDate(), new Date());
     }
 
     @PostMapping("/search")
     public String search(Model model, @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM") Date startDate, @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM") Date endDate) {
-        getChartData(model, startDate, endDate);
-
-        return "reports";
+        return getChartData(model, startDate, endDate);
     }
 
     @GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
@@ -56,10 +52,12 @@ public class ReportsController {
         return calendar.getTime();
     }
 
-    private void getChartData(Model model, Date startDate, Date endDate) {
+    private String getChartData(Model model, Date startDate, Date endDate) {
         var chartData = reportsService.sumTrafficsToReport(parseDate(startDate), parseDate(endDate));
         model.addAttribute("chartData", chartData);
-        model.addAttribute("report", Report.builder().startDate(startDate).endDate(endDate).build());
+        model.addAttribute("reportDateRange", ReportDateRange.builder().startDate(startDate).endDate(endDate).build());
+
+        return "reports";
     }
 
     private LocalDate parseDate(Date date) {

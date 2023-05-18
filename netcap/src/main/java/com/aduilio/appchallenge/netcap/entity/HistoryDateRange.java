@@ -7,11 +7,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 
 /**
- * Represents the history range.
+ * Represents the history date range.
  */
 @Builder
 @Getter
-public class History {
+public class HistoryDateRange {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;

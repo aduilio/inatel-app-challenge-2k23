@@ -44,7 +44,7 @@
 
     <div class="row">
         <div class="col-sm-3 mb-2">
-            <form th:action="@{/history/search}" method="post" th:object="${history}">
+            <form th:action="@{/history/search}" method="post" th:object="${historyDateRange}">
                 <div class="card border-secondary">
                     <div class="card-body text-secondary">
                         <div class="form-group">
@@ -63,17 +63,17 @@
             </form>
 
             <div th:if="${traffics != null and not #lists.isEmpty(traffics)}">
-                <a class="btn btn-block btn-secondary mt-4" th:href="@{|/history/download|}" th:target="_blank"><i class="bi bi-download"></i> Download PDF</a>
+                <a class="btn btn-block btn-secondary mt-4 mb-4" th:href="@{|/history/download|}" th:target="_blank"><i class="bi bi-download"></i> Download PDF</a>
             </div>
         </div>
         <div class="col-sm-9">
-            <div class="container" th:if="${download != null}">
-                <div class="row d-flex justify-content-center">
+            <div class="card border-secondary text-center mb-2" th:if="${download != null}">
+                <div class="row card-body justify-content-center">
                     <div class="col-sm-3">
-                        <p class="text-center h5"><i class="bi bi-cloud-download"></i> <strong th:text="${download}"></strong></p>
+                        <span class="h5"><i class="bi bi-cloud-download"></i> <strong th:text="${download}"></strong></span>
                     </div>
                     <div class="col-sm-3">
-                        <p class="text-center h5"><i class="bi bi-cloud-upload"></i> <strong th:text="${upload}"></strong></p>
+                        <span class="h5"><i class="bi bi-cloud-upload"></i> <strong th:text="${upload}"></strong></span>
                     </div>
                 </div>
             </div>

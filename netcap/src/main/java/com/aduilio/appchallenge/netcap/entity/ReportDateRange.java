@@ -7,11 +7,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
 /**
- * Represents the history range.
+ * Represents the report date range.
  */
 @Builder
 @Getter
-public class Report {
+public class ReportDateRange {
 
     @DateTimeFormat(pattern = "yyyy-MM")
     private Date startDate;
