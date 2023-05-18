@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="https://thymeleaf.org" lang="en">
+<div class="row" th:fragment="dashboard">
+    <div class="col-sm-3">
+        <div class="card border-secondary text-center">
+            <div class="card-header">Consumption today</div>
+            <div class="card-body text-secondary">
+                <div class="row">
+                    <div class="col">
+                        <i class="bi bi-cloud-download"></i>
+                        <p th:text="${consumptionToday}" class="h5 text-center">-</p>
+                    </div>
+                    <div class="col">
+                        <i class="bi bi-cloud-upload"></i>
+                        <p th:text="${uploadToday}" class="h6 text-center">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card border-secondary text-center mt-4 mb-4">
+            <div class="card-header">Consumption this week</div>
+            <div class="card-body text-secondary">
+                <div class="row">
+                    <div class="col">
+                        <i class="bi bi-cloud-download"></i>
+                        <p th:text="${consumptionWeek}" class="h5 text-center">-</p>
+                    </div>
+                    <div class="col">
+                        <i class="bi bi-cloud-upload"></i>
+                        <p th:text="${uploadWeek}" class="h6 text-center">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="card border-info text-center">
+            <div class="card-header">Consumption now</div>
+            <div class="card-body text-info">
+                <div class="row">
+                    <div class="col">
+                        <i class="bi bi-cloud-download"></i>
+                        <p th:text="${consumptionNow}" class="h5 text-center">-</p>
+                    </div>
+                    <div class="col">
+                        <i class="bi bi-cloud-upload"></i>
+                        <p th:text="${uploadNow}" class="h6 text-center">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card border-secondary text-center mt-4 mb-4">
+            <div class="card-header">Consumption this month</div>
+            <div class="card-body text-secondary">
+                <div class="row">
+                    <div class="col">
+                        <i class="bi bi-cloud-download"></i>
+                        <p th:text="${consumptionMonth}" class="h5 text-center">-</p>
+                    </div>
+                    <div class="col">
+                        <i class="bi bi-cloud-upload"></i>
+                        <p th:text="${uploadMonth}" class="h6 text-center">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="container">
+            <table class="table table-striped text-center" th:if="${traffics != null}">
+                <thead>
+                <tr>
+                    <th scope="col">Application/Process</th>
+                    <th scope="col">Download</th>
+                    <th scope="col">Upload</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${traffics.empty}">
+                    <td colspan="3">No traffic available.</td>
+                </tr>
+                <tr th:each="traffic : ${traffics}">
+                    <td><span th:text="${traffic.name}">-</span></td>
+                    <td><span th:text="${traffic.download}">-</span></td>
+                    <td><span th:text="${traffic.upload}">-</span></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
