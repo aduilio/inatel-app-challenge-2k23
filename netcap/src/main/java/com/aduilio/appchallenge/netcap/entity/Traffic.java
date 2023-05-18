@@ -23,13 +23,11 @@ public class Traffic {
     /**
      * Creates Traffic.
      *
-     * @param pid      the process id
      * @param name     the name
      * @param download the download value
      * @param upload   the upload value
      */
-    public Traffic(String pid, String name, Long download, Long upload) {
-        this.pid = pid;
+    public Traffic(String name, Long download, Long upload) {
         this.name = name;
         this.download = download;
         this.upload = upload;

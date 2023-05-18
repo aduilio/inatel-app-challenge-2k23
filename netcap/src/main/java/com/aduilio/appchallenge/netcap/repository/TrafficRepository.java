@@ -47,11 +47,10 @@ public interface TrafficRepository extends JpaRepository<Traffic, Long> {
      * @return List of Traffic
      */
     @Query("""
-            SELECT NEW com.aduilio.appchallenge.netcap.entity.Traffic(t.pid, t.name, SUM(t.download) as download, SUM(t.upload) as upload)
+            SELECT NEW com.aduilio.appchallenge.netcap.entity.Traffic(t.name, SUM(t.download) as download, SUM(t.upload) as upload)
             FROM Traffic t
             WHERE t.date >= :startDate AND t.date <= :endDate
-            GROUP BY t.pid ORDER BY download desc
+            GROUP BY t.name ORDER BY download desc
             """)
     List<Traffic> sumTraffics(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
-
 }
