@@ -1,27 +1,29 @@
 package com.aduilio.appchallenge.netcap.service;
 
-import com.aduilio.appchallenge.netcap.alert.ConsumptionAlert;
-import com.aduilio.appchallenge.netcap.alert.UsageAlert;
+import com.aduilio.appchallenge.netcap.alert.ConsumptionAlertReceiver;
+import com.aduilio.appchallenge.netcap.alert.UsageAlertReceiver;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
- * Provides methods to send alerts.
+ * Provides methods to receive and store alerts.
  */
 @Service
+@Getter
 @RequiredArgsConstructor
-public class AlertService {
+public class AlertService implements ConsumptionAlertReceiver, UsageAlertReceiver {
 
-    private final List<ConsumptionAlert> consumptionAlerts;
-    private final List<UsageAlert> usageAlerts;
+    private String consumptionAlert;
+    private String usageAlert;
 
-    public void sendConsumptionAlerts(String message) {
-        consumptionAlerts.forEach(alert -> alert.send(message));
+    @Override
+    public void consumptionAlert(String message) {
+        consumptionAlert = message;
     }
 
-    public void sendUsageAlerts(String message) {
-        usageAlerts.forEach(alert -> alert.send(message));
+    @Override
+    public void usageAlert(String message) {
+        usageAlert = message;
     }
 }

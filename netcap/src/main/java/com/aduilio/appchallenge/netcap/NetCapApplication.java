@@ -1,5 +1,7 @@
 package com.aduilio.appchallenge.netcap;
 
+import com.aduilio.appchallenge.netcap.alert.monitor.ConsumptionMonitor;
+import com.aduilio.appchallenge.netcap.alert.monitor.UsageMonitor;
 import com.aduilio.appchallenge.netcap.connector.Connector;
 import com.aduilio.appchallenge.netcap.properties.SocketConnectionProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +24,21 @@ public class NetCapApplication {
 	@Autowired
 	private Connector connector;
 
+	@Autowired
+	private ConsumptionMonitor consumptionMonitor;
+
+	@Autowired
+	private UsageMonitor usageMonitor;
+
 	public static void main(String[] args) {
 		SpringApplication.run(NetCapApplication.class, args);
 	}
 
 	@EventListener(ApplicationReadyEvent.class)
-	public void startCollectTraffic() {
+	public void startServices() {
 		connector.connect();
+		usageMonitor.run();
+		consumptionMonitor.run();
 	}
 
 	@Bean
