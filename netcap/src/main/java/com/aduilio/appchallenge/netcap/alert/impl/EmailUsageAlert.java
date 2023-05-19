@@ -4,12 +4,14 @@ import com.aduilio.appchallenge.netcap.alert.UsageAlert;
 import com.aduilio.appchallenge.netcap.service.SettingsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.util.StringUtils;
 
 /**
  * Implements {@link UsageAlert} to send an email.
  */
 @Slf4j
+@Component
 @RequiredArgsConstructor
 public class EmailUsageAlert implements UsageAlert {
 
